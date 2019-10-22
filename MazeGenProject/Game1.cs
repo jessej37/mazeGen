@@ -1,6 +1,9 @@
-﻿using Microsoft.Xna.Framework;
+﻿using HackAndSlash.MazeGeneration;
+using MazeGenProject.MazeGeneration;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System.IO;
 
 namespace MazeGenProject
 {
@@ -11,11 +14,16 @@ namespace MazeGenProject
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        Rectangle pixel = new Rectangle(0, 0, 1, 1);
+        Chunk[,] chunks = new Chunk[16, 16];
+        MazeGenerator mazeGen;
+        Texture2D blkPixel;
 
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+            System.Diagnostics.Debug.WriteLine("Starting");
         }
 
         /// <summary>
@@ -26,7 +34,8 @@ namespace MazeGenProject
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            mazeGen = new MazeGenerator(16, 16);
+            chunks = mazeGen.getMap();
 
             base.Initialize();
         }
@@ -40,7 +49,10 @@ namespace MazeGenProject
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            FileStream fstream = new FileStream("Content/blkPixel.png", FileMode.Open);
+            blkPixel = Texture2D.FromStream(GraphicsDevice, fstream);
+
+            fstream.Dispose();
         }
 
         /// <summary>
@@ -73,10 +85,28 @@ namespace MazeGenProject
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.White);
+            spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-            // TODO: Add your drawing code here
+            for (int w = 0; w < 16; w++)
+            {
+                for(int h = 0; h < 16; h++)
+                {
+                    for (int x = 0; x < 16; x++)
+                    {
+                        for (int y = 0; y < 16; y++)
+                        {
+                            if(!chunks[w, h].tiles[x, y].traversible)
+                            {
+                                Rectangle thisPixel = new Rectangle(chunks[w, h].tiles[x, y].x + 5, chunks[w, h].tiles[x, y].y + 5, 1, 1);
+                                spriteBatch.Draw(blkPixel, thisPixel, Color.Black);
+                            }
+                        }
+                    }
+                }
+            }
 
+            spriteBatch.End();
             base.Draw(gameTime);
         }
     }

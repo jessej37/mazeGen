@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HackAndSlash.MazeGen
+namespace HackAndSlash.MazeGeneration
 {
     class SeedGen
     {
@@ -34,15 +34,34 @@ namespace HackAndSlash.MazeGen
             if (bitNum % 8 == 1)
                 bitNum++;
 
-            int next = (int)seed.ToCharArray()[charNum];
-            BitArray thisByte = new BitArray(next);
+            int next = (int)seed.ToCharArray()[charNum % seed.Length];
+            BitArray thisByte = new BitArray(System.BitConverter.GetBytes(next));
 
             bitNum++;
-
+            
             if (bitNum % 8 == 0)
                 charNum++;
 
             return thisByte[bitNum % 8];
+        }
+
+        public int nextNum(int bits)
+        {
+            int output = 0, b = 1, c = 0, d = bits;
+            for(int i = 0; i < d; i++)
+            {
+                if (nextBool())
+                {
+                    c = 1;
+                }
+                else
+                {
+                    c = 0;
+                }
+                output += b * c;
+                b *= 2;
+            }
+            return output;
         }
 
         public string generateSeed()
