@@ -4,27 +4,32 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeGenProject.MazeGeneration
+namespace MazeGeneration
 {
     class Chunk
     {
         int width, height;
+        public int x, y;
         public Tile[,] tiles;
         public bool initialized = false;
         //exitable order: left, up, right, down
         public bool[] exitable = {true, true, true, true};
 
-        public Chunk(int w, int h)
+        public Chunk(int w, int h, int x, int y)
         {
             width = w;
             height = h;
+            this.x = x;
+            this.y = y;
             tiles = new Tile[width, height];
         }
 
-        public Chunk(int w, int h, bool[] e)
+        public Chunk(int w, int h, int x, int y, bool[] e)
         {
             width = w;
             height = h;
+            this.x = x;
+            this.y = y;
             tiles = new Tile[width, height];
             e.CopyTo(exitable, 0);
         }

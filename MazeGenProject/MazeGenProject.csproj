@@ -41,12 +41,19 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CornerRoom4.cs" />
+    <Compile Include="CornerRoom3.cs" />
+    <Compile Include="CornerRoom2.cs" />
+    <Compile Include="CornerRoom.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="MazeGeneration\Chunk.cs" />
     <Compile Include="MazeGeneration\FloorTile.cs" />
     <Compile Include="MazeGeneration\MazeGenerator.cs" />
+    <Compile Include="MazeGeneration\Point.cs" />
+    <Compile Include="MazeGeneration\Room.cs" />
     <Compile Include="MazeGeneration\SeedGen.cs" />
     <Compile Include="MazeGeneration\Tile.cs" />
+    <Compile Include="MazeGeneration\WalkingWall.cs" />
     <Compile Include="MazeGeneration\WallTile.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

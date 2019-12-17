@@ -6,21 +6,35 @@ using System.Threading.Tasks;
 
 namespace MazeGeneration
 {
-    interface Tile
+    interface Room
     {
-        bool traversible
+        int width
         {
             get;
             set;
         }
 
-        int x
+        int height
+        {
+            get;
+            set;
+        }
+        
+        bool rotatable
         {
             get;
             set;
         }
 
-        int y
+        Tile[,] tiles
+        {
+            get;
+            set;
+        }
+
+        Tile[,] copy();
+
+        bool[] exitable
         {
             get;
             set;

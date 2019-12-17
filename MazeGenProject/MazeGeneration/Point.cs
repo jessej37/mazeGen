@@ -6,24 +6,19 @@ using System.Threading.Tasks;
 
 namespace MazeGeneration
 {
-    interface Tile
+    class Point
     {
-        bool traversible
+        public int X, Y;
+
+        public Point()
         {
-            get;
-            set;
+
         }
 
-        int x
+        public Point(int x, int y)
         {
-            get;
-            set;
-        }
-
-        int y
-        {
-            get;
-            set;
+            X = x;
+            Y = y;
         }
     }
 }

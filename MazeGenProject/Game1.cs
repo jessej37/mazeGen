@@ -1,5 +1,4 @@
-﻿using HackAndSlash.MazeGeneration;
-using MazeGenProject.MazeGeneration;
+﻿using MazeGeneration;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -15,9 +14,11 @@ namespace MazeGenProject
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         Rectangle pixel = new Rectangle(0, 0, 1, 1);
-        Chunk[,] chunks = new Chunk[16, 16];
+        static int mapWidth = 45, mapHeight = 27;
+        Chunk[,] chunks = new Chunk[mapWidth, mapHeight];
         MazeGenerator mazeGen;
         Texture2D blkPixel;
+        bool spaceReset = true;
 
         public Game1()
         {
@@ -34,7 +35,12 @@ namespace MazeGenProject
         /// </summary>
         protected override void Initialize()
         {
-            mazeGen = new MazeGenerator(16, 16);
+            mazeGen = new MazeGenerator(mapWidth, mapHeight);
+            mazeGen.addRoom(new CornerRoom());
+            mazeGen.addRoom(new CornerRoom2());
+            mazeGen.addRoom(new CornerRoom3());
+            mazeGen.addRoom(new CornerRoom4());
+            mazeGen.init();
             chunks = mazeGen.getMap();
 
             base.Initialize();
@@ -74,7 +80,17 @@ namespace MazeGenProject
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            if(Keyboard.GetState().IsKeyDown(Keys.Space) && spaceReset)
+            {
+                mazeGen = new MazeGenerator(mapWidth, mapHeight);
+
+                mazeGen.init();
+                chunks = mazeGen.getMap();
+            }
+            else if(!Keyboard.GetState().IsKeyDown(Keys.Space))
+            {
+                spaceReset = true;
+            }
 
             base.Update(gameTime);
         }
@@ -88,13 +104,13 @@ namespace MazeGenProject
             GraphicsDevice.Clear(Color.White);
             spriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp);
 
-            for (int w = 0; w < 16; w++)
+            for (int w = 0; w < mapWidth; w++)
             {
-                for(int h = 0; h < 16; h++)
+                for(int h = 0; h < mapHeight; h++)
                 {
-                    for (int x = 0; x < 16; x++)
+                    for (int x = 0; x < mazeGen.chunkWidth; x++)
                     {
-                        for (int y = 0; y < 16; y++)
+                        for (int y = 0; y < mazeGen.chunkHeight; y++)
                         {
                             if(!chunks[w, h].tiles[x, y].traversible)
                             {

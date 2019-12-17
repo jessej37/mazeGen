@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MazeGenProject.MazeGeneration
+namespace MazeGeneration
 {
     class FloorTile : Tile
     {
